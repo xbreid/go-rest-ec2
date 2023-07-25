@@ -1,8 +1,10 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
+	"github.com/aws/aws-sdk-go-v2/service/sqs"
 	"io"
 	"net/http"
 )
@@ -11,6 +13,12 @@ type jsonResponse struct {
 	Error   bool   `json:"error"`
 	Message string `json:"message"`
 	Data    any    `json:"data,omitempty"`
+}
+
+func (app *Config) SendSQSMessage(ctx context.Context, input *sqs.SendMessageInput) error {
+	_, err := app.sqsClient.SendMessage(ctx, input)
+
+	return err
 }
 
 func (app *Config) ReadJson(w http.ResponseWriter, r *http.Request, data any) error {
