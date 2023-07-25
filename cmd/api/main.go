@@ -10,17 +10,6 @@ import (
 	"os"
 )
 
-// var cfg aws.Config
-
-const (
-	visibilityTimeout = 60 * 10
-	waitingTimeout    = 20
-)
-
-type MsgType struct {
-	Message string `json:"message"`
-}
-
 const webPort = "3000"
 
 type Config struct {

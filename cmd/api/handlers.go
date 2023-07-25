@@ -11,6 +11,22 @@ import (
 func (app *Config) HelloWorld(w http.ResponseWriter, r *http.Request) {
 	ctx := context.TODO()
 
+	queueName := "sqs-mw-queue"
+	gQInput := &sqs.GetQueueUrlInput{
+		QueueName: &queueName,
+	}
+
+	result, err := app.GetQueueURL(ctx, gQInput)
+	if err != nil {
+		fmt.Println("Got an error getting the queue URL:")
+		fmt.Println(err)
+		return
+	}
+
+	queueURL := result.QueueUrl
+
+	fmt.Println(queueURL)
+
 	payload := jsonResponse{
 		Error:   false,
 		Message: fmt.Sprintf("Root endpoint hit"),
@@ -18,8 +34,8 @@ func (app *Config) HelloWorld(w http.ResponseWriter, r *http.Request) {
 	}
 
 	sMInput := &sqs.SendMessageInput{
-		MessageBody: aws.String("Root endpoint hit"),
-		QueueUrl:    &app.sqsQueue,
+		MessageBody: aws.String("Information about the NY Times fiction bestseller for the week of 12/11/2016."),
+		QueueUrl:    queueURL,
 	}
 
 	app.SendSQSMessage(ctx, sMInput)
