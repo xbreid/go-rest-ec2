@@ -31,7 +31,7 @@ jobs:
       
     - name: Download task definition
       run: |
-        aws ecs describe-task-definition --task-definition ec2-go-task-defn --query taskDefinition > task-definition.json
+        aws ecs describe-task-definition --task-definition fargate-go-task-defn --query taskDefinition > task-definition.json
 
     - name: Build, tag, and push image to Amazon
       id: build-image
@@ -56,7 +56,7 @@ jobs:
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
         task-definition: ${{ steps.task-def.outputs.task-definition }}
-        service: ec2-go-service
+        service: fargate-go-service
         cluster: mw-cluster
         wait-for-service-stability: true
 
