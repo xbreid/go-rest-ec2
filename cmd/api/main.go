@@ -33,6 +33,7 @@ func main() {
 
 	// TODO: handle settings configs
 	queueUrl := os.Getenv("SQS_URL")
+	log.Printf("QUEUE_URL: %s", queueUrl)
 
 	cfg, err := config.LoadDefaultConfig(context.TODO())
 	if err != nil {
