@@ -58,12 +58,11 @@ func (d *Documents) AccountGroupSearch(query string) ([]*AccountGroupDoc, error)
 
 	content := fmt.Sprintf(`{
     "size": 25,
-    "query": {
-        "multi_match": {
-            "query": "%s",
-            "fields": ["display_name", "street_address", "region", "locality", "external_id"]
-        }
-    }
+		"query": {
+			"query_string": {
+				"query": "%s"
+			}
+		}
 	}`, query)
 
 	search := opensearchapi.SearchRequest{

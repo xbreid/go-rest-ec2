@@ -53,6 +53,32 @@ func (app *Config) PgSearch(w http.ResponseWriter, r *http.Request) {
 	app.WriteJson(w, http.StatusAccepted, payload)
 }
 
+func (app *Config) PgRankedSearch(w http.ResponseWriter, r *http.Request) {
+	ctx := context.Background()
+
+	search := r.URL.Query().Get("search")
+
+	if search == "" {
+		app.WriteJson(w, http.StatusBadRequest, "search parameter required")
+		return
+	}
+
+	accountGroups, err := app.DB.RankedSearch(ctx, search)
+	if err != nil {
+		log.Println(err)
+		app.WriteJson(w, http.StatusInternalServerError, "pg search failure")
+		return
+	}
+
+	payload := jsonResponse{
+		Error:   false,
+		Message: "accepted",
+		Data:    accountGroups,
+	}
+
+	app.WriteJson(w, http.StatusAccepted, payload)
+}
+
 func (app *Config) EsSearch(w http.ResponseWriter, r *http.Request) {
 	search := r.URL.Query().Get("search")
 

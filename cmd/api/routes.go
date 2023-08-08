@@ -25,6 +25,7 @@ func (app *Config) Routes() http.Handler {
 	mux.Get("/", app.HelloWorld)
 	mux.Get("/es", app.EsSearch)
 	mux.Get("/pg", app.PgSearch)
+	mux.Get("pg-ranked", app.PgRankedSearch)
 	mux.Post("/upsert", app.UpsertAccountGroup)
 
 	return mux
