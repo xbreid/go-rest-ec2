@@ -6,6 +6,7 @@ import (
 	"errors"
 	"github.com/aws/aws-sdk-go-v2/service/sqs"
 	"io"
+	"math/rand"
 	"net/http"
 )
 
@@ -15,12 +16,22 @@ type jsonResponse struct {
 	Data    any    `json:"data,omitempty"`
 }
 
+var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+
+func (app *Config) randSeq(n int) string {
+	b := make([]rune, n)
+	for i := range b {
+		b[i] = letters[rand.Intn(len(letters))]
+	}
+	return string(b)
+}
+
 func (app *Config) GetQueueURL(c context.Context, input *sqs.GetQueueUrlInput) (*sqs.GetQueueUrlOutput, error) {
-	return app.sqsClient.GetQueueUrl(c, input)
+	return app.SQS.GetQueueUrl(c, input)
 }
 
 func (app *Config) SendSQSMessage(ctx context.Context, input *sqs.SendMessageInput) error {
-	_, err := app.sqsClient.SendMessage(ctx, input)
+	_, err := app.SQS.SendMessage(ctx, input)
 
 	return err
 }

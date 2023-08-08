@@ -23,6 +23,9 @@ func (app *Config) Routes() http.Handler {
 	mux.Use(middleware.Heartbeat("/ping"))
 
 	mux.Get("/", app.HelloWorld)
+	mux.Get("/es", app.EsSearch)
+	mux.Get("/pg", app.PgSearch)
+	mux.Post("/upsert", app.UpsertAccountGroup)
 
 	return mux
 }

@@ -1,0 +1,28 @@
+version: "2"
+sql:
+  - engine: "postgresql"
+    queries: [
+      "db/queries",
+    ]
+    schema: "db/schema.sql"
+    gen:
+      go:
+        package: "data"
+        out: "data"
+        emit_json_tags: true
+        overrides:
+          - column: account_groups.display_name
+            go_type: string
+            nullable: true
+          - column: account_groups.country
+            go_type: string
+            nullable: true
+          - column: account_groups.locality
+            go_type: string
+            nullable: true
+          - column: account_groups.street_address
+            go_type: string
+            nullable: true
+          - column: account_groups.region
+            go_type: string
+            nullable: true
